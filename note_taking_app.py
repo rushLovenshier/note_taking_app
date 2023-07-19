@@ -3,6 +3,9 @@ import gtts
 from playsound import playsound
 import os
 from datetime import datetime
+from dotenv import load_dotenv
+
+load_dotenv('.env')
 
 r = sr.Recognizer()
 
@@ -32,5 +35,21 @@ def play_sound(text):
     except AssertionError:
         print("Failed to play sound")
 
+CMD = os.environ.get('ACTIVATION_COMMAND')
 
+while True:
+    a = get_audio()
+    command = audio_to_text()
 
+    if CMD in command.lower():
+        print("activated")
+        play_sound("what can I do for you?")
+
+        note = get_audio()
+        note = audio_to_text(note)
+
+        if(note):
+            play_sound(note)
+
+            now = datetime.now().astimezone().isoformat()
+            
